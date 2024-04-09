@@ -8,13 +8,13 @@ interface CourseCardProps {
     title: string;
     imageSrc: string;
     onClick: (id: number) => void;
-    disabled: false;
+    disabled: boolean;
     active: boolean;
 }
 
 export function CourseCard({id, onClick, key, title, imageSrc, disabled, active}: CourseCardProps) {
     return (
-        <div onClick={() => onClick(id)}
+        <div onClick={() => onClick(id)} key={key}
         className={cn(`h-full border-2 rounded-xl border-b-4 hover:bg-black/5 cursor-pointer
             active:border-b-2 flex flex-col items-center justify-between p-3 pb-6 min-h-52 min-w-50`,
             disabled && "pointer-events-auto opacity-50")}
