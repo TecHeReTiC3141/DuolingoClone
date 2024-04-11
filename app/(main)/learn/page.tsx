@@ -2,17 +2,20 @@ import { StickyWrapper } from "@/components/StickyWrapper";
 import { FeedWrapper } from "@/components/FeedWrapper";
 import { LearnHeader } from "@/app/(main)/learn/LearnHeader";
 import { UserProgress } from "@/components/UserProgress";
-import { getUserProgress } from "@/db/queries";
+import { getUnits, getUserProgress } from "@/db/queries";
 import { redirect } from "next/navigation";
 
 export default async  function LearnPage() {
 
     const userProgressPromise = getUserProgress();
+    const unitsPromise = getUnits();
 
     const [
-        userProgress
+        userProgress,
+        units
     ] = await Promise.all([
         userProgressPromise,
+        unitsPromise,
     ]);
 
     if (!userProgress || !userProgress.activeCourse) {
@@ -24,20 +27,18 @@ export default async  function LearnPage() {
             <StickyWrapper>
                 <UserProgress
                     activeCourse={userProgress.activeCourse}
-                    hearts={5}
-                    points={100}
+                    hearts={userProgress.hearts}
+                    points={userProgress.points}
                     hasActiveSubscription={true}
                 />
             </StickyWrapper>
             <FeedWrapper>
                 <LearnHeader title={userProgress.activeCourse.title} />
-                <div className="h-56 mb-4 w-full bg-blue-500" />
-                <div className="h-56 pb-4 w-full bg-blue-500" />
-                <div className="h-56 pb-4 w-full bg-blue-500" />
-                <div className="h-56 pb-4 w-full bg-blue-500" />
-                <div className="h-56 pb-4 w-full bg-blue-500" />
-                <div className="h-56 pb-4 w-full bg-blue-500" />
-                <div className="h-56 pb-4 w-full bg-blue-500" />
+                {units.map(unit => (
+                    <div key={unit.id} className="mb-10">
+                        {JSON.stringify(unit)}
+                    </div>
+                ))}
             </FeedWrapper>
         </div>
     )
