@@ -26,6 +26,7 @@ export function Unit({id, order, title, description, lessons, activeLesson, acti
                     lessons.map((lesson, index) => {
                         const isCurrent = lesson.id === activeLesson?.id;
                         const isLocked = !lesson.completed && !isCurrent;
+                        // console.log(isCurrent, isLocked, lesson);
                         return <LessonButton
 
                             key={lesson.id}

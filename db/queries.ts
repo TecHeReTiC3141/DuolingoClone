@@ -19,6 +19,7 @@ export const getUnits = cache(async () => {
 
     const data = await db.query.units.findMany({
         where: eq(units.courseId, userProgress.activeCourseId),
+        orderBy: (units, {asc}) => [asc(units.order)],
         with: {
             lessons: {
                 with: {
@@ -36,7 +37,7 @@ export const getUnits = cache(async () => {
     // TODO: make normalization using drizzleORM query builder
     const normalizedData = data.map(unit => {
         const lessonsWithCompletedStatus = unit.lessons.map(lesson => {
-            const allCompletedChallenges = lesson.challenges.every(challenge =>
+            const allCompletedChallenges = lesson.challenges.length > 0 && lesson.challenges.every(challenge =>
                 challenge.challengeProgress
                 && challenge.challengeProgress.length > 0
                 && challenge.challengeProgress.every(progress => progress.completed));
