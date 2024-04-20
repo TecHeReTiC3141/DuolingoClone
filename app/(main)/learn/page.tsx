@@ -4,6 +4,7 @@ import { LearnHeader } from "@/app/(main)/learn/LearnHeader";
 import { UserProgress } from "@/components/UserProgress";
 import { getUnits, getUserProgress } from "@/db/queries";
 import { redirect } from "next/navigation";
+import { Unit } from "@/app/(main)/learn/Unit";
 
 export default async  function LearnPage() {
 
@@ -36,7 +37,7 @@ export default async  function LearnPage() {
                 <LearnHeader title={userProgress.activeCourse.title} />
                 {units.map(unit => (
                     <div key={unit.id} className="mb-10">
-                        {JSON.stringify(unit)}
+                        <Unit {...unit} activeLesson={undefined} activeLessonPercentage={0}/>
                     </div>
                 ))}
             </FeedWrapper>
